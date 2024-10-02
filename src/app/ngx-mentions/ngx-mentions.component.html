@@ -1,0 +1,40 @@
+<div class="relative-block-container">
+  <textarea
+    wrap="hard"
+    #textareaRef
+    placeholder="Enter '@' and start typing..."
+    [formControl]="textCtrl"
+  ></textarea>
+
+  <ngx-mentions
+    [textInputElement]="textareaRef"
+    [menuTemplate]="menuTemplate"
+    [selectedChoices]="selectedChoices"
+    [mentionsConfig]="mentionsConfig"
+    [mentions]="mentions"
+    [searchRegexp]="searchRegexp"
+    [removeWholeTagOnBackspace]="true"
+    (search)="loadChoices($event)"
+    (selectedChoicesChange)="onSelectedChoicesChange($event)"
+    (menuShow)="onMenuShow()"
+    (menuHide)="onMenuHide()"
+  ></ngx-mentions>
+
+  <ng-template #menuTemplate let-selectChoice="selectChoice">
+    <ul
+      class="ngx-selectable-list"
+      ngxKbListNavigation
+      [choices]="choices"
+      (selectChoice)="selectChoice($event)"
+      [class.loader-only]="!choices.length && loading"
+    >
+      <li
+        *ngFor="let user of choices"
+        class="ngx-selectable-list-item"
+        (click)="selectChoice(user)"
+      >
+        <span title="{{ user.name }}">{{ user.name }}</span>
+      </li>
+    </ul>
+  </ng-template>
+</div>
